@@ -13,4 +13,5 @@ add_executable (clox
 	src/vm.c
 	src/scanner.c
 	src/compiler.c
+	src/object.c
 )
