@@ -14,4 +14,5 @@ add_executable (clox
 	src/scanner.c
 	src/compiler.c
 	src/object.c
+	src/table.c
 )
