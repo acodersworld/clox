@@ -19,6 +19,7 @@ void freeTable(Table* table) {
 	initTable(table);
 }
 
+#include <stdio.h>
 static Entry* findEntry(Entry* entries, int capacity, ObjString* key) {
 	uint32_t index = key->hash % capacity;
 	Entry* tomestone = NULL;
@@ -62,7 +63,7 @@ static void adjustCapacity(Table* table, int capacity) {
 		Entry* entry = table->entries + i;
 		if (entry->key == NULL) continue;
 
-		Entry* newEntry = findEntry(table->entries, table->capacity, entry->key);
+		Entry* newEntry = findEntry(entries, capacity, entry->key);
 		newEntry->key = entry->key;
 		newEntry->value = entry->value;
 		table->count++;
