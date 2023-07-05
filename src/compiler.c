@@ -292,7 +292,7 @@ static void namedVariable(Token name, bool canAssign) {
 	} else {
 		arg = identifierConstant(&name);
 		getOp = OP_GET_GLOBAL;
-		getOp = OP_SET_GLOBAL;
+		setOp = OP_SET_GLOBAL;
 	}
 
 	if (canAssign && match(TOKEN_EQUAL)) {
