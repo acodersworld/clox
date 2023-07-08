@@ -16,6 +16,12 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
 
 static void freeObject(Obj* object) {
 	switch (object->type) {
+		case OBJ_CLOSURE: {
+			ObjClosure* closure = (ObjClosure*)object;
+			FREE_ARRAY(ObjUpvalue*, closure->upvalues, closure->upvalueCount);
+			FREE(ObjClosure, object);
+			break;
+		}
 		case OBJ_FUNCTION: {
 			ObjFunction* function = (ObjFunction*)object;
 			freeChunk(&function->chunk);
@@ -24,6 +30,10 @@ static void freeObject(Obj* object) {
 		}
 		case OBJ_NATIVE: {
 			FREE(ObjFunction, object);
+			break;
+		}
+		case OBJ_UPVALUE: {
+			FREE(ObjUpvalue, object);
 			break;
 		}
 		case OBJ_STRING: {
