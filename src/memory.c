@@ -59,6 +59,10 @@ void markValue(Value value) {
 
 static void freeObject(Obj* object) {
 	switch (object->type) {
+		case OBJ_CLASS: {
+			FREE(ObjClass, object);
+			break;
+		}
 		case OBJ_CLOSURE: {
 			ObjClosure* closure = (ObjClosure*)object;
 			FREE_ARRAY(ObjUpvalue*, closure->upvalues, closure->upvalueCount);
@@ -119,6 +123,11 @@ static void blackenObject(Obj* object) {
 #endif
 
 	switch (object->type) {
+		case OBJ_CLASS: {
+			ObjClass* klass = (ObjClass*)object;
+			markObject((Obj*)klass->name);
+			break;
+		}
 		case OBJ_CLOSURE: {
 			ObjClosure* closure = (ObjClosure*)object;
 			markObject((Obj*)closure->function);
@@ -136,6 +145,12 @@ static void blackenObject(Obj* object) {
 		case OBJ_UPVALUE:
 			markValue(((ObjUpvalue*)object)->closed);
 			break;
+		case OBJ_INSTANCE: {
+			ObjInstance* instance = (ObjInstance*)object;
+			markObject((Obj*)instance->klass);
+			markTable(&instance->fields);
+			break;
+		}
 		case OBJ_NATIVE:
 		case OBJ_STRING:
 			break;
