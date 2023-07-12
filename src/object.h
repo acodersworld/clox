@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common.h"
-#include "Table.h"
+#include "table.h"
 #include "chunk.h"
 #include "value.h"
 
